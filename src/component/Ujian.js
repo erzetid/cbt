@@ -48,6 +48,12 @@ export default function Ujian() {
                 <TableCell align="left">Soal</TableCell>
                 <TableCell align="left">: 40 buah</TableCell>
               </TableRow>
+              <TableRow>
+                <TableCell align="left">Jadwal</TableCell>
+                <TableCell align="left">
+                  : 21 Sep 2021 19:30 - 22 Sep 2022 18:30 WIB
+                </TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
