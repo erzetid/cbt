@@ -1,20 +1,21 @@
-import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
 import { Button, Typography } from '@mui/material';
+import { DataGrid } from '@mui/x-data-grid';
 
 const columns = [
-  { field: 'id', headerName: 'ID' },
-  { field: 'namaUjian', headerName: 'Nama Ujian' },
-  { field: 'tanggalUjian', headerName: 'Tanggal' },
+  { field: 'id', headerName: 'ID', width: 30 },
+  { field: 'namaUjian', headerName: 'Nama Ujian', width: 200 },
+  { field: 'tanggalUjian', headerName: 'Tanggal', width: 200 },
   {
     field: 'keterangan',
     headerName: 'Keterangan',
-    sortable: false
+    sortable: false,
+    width: 160
   },
   {
     field: 'aksi',
     headerName: 'Aksi',
     sortable: false,
+    width: 120,
     renderCell: (params) => {
       return (
         <Button

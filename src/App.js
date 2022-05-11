@@ -1,19 +1,19 @@
-import React from 'react';
-import {
-  BrowserRouter,
-  Routes, // instead of "Switch"
-  Route
-} from 'react-router-dom';
-import Container from '@mui/material/Container';
-import ResponsiveAppBar from './ResponsiveAppBar';
-import User from './component/User';
 import { Typography } from '@mui/material';
+import Container from '@mui/material/Container';
+import { useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Login from './component/Login';
 import Pengumuman from './component/Pengumuman';
 import Pertanyaan from './component/Pertanyaan';
 import Ujian from './component/Ujian';
+import User from './component/User';
 import WindowFocusHandler from './component/WindowFocusHandler';
+import ResponsiveAppBar from './ResponsiveAppBar';
 
 function App() {
+  const [isLogin, setIsLogin] = useState(false);
+  if (!isLogin) return <Login />;
+
   return (
     <div>
       <BrowserRouter>
@@ -22,7 +22,7 @@ function App() {
         <Container>
           <Routes>
             <Route exact path="/" element={<User />} />
-            <Route exact path="/Dashboard" element={<User />} />
+            <Route exact path="/" element={<User />} />
             <Route exact path="/Pengumuman" element={<Pengumuman />} />
             <Route exact path="/Ujian" element={<Ujian />} />
             <Route exact path="/Pertanyaan" element={<Pertanyaan />} />

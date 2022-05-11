@@ -1,6 +1,5 @@
-import * as React from 'react';
-import { Avatar, Typography, CardContent, Grid, Card } from '@mui/material';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
+import { Avatar, Card, CardContent, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
 import TableUser from './TableUser';
 
@@ -40,7 +39,7 @@ const User = () => {
       </Card>
 
       <Grid container>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <Card
             sx={{
               minWidth: 275,
