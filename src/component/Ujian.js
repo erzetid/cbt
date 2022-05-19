@@ -1,3 +1,4 @@
+import { Alert } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -12,17 +13,24 @@ import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { preTest } from '../app/slice/ujianThunk';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { mulaiUjian, preTest } from '../app/slice/ujianThunk';
 import trainImage from '../asset/train.jpg';
 
 export default function Ujian() {
-  const { dataPreTest, message } = useSelector((state) => state.ujian);
+  const { dataPreTest, message, idScore } = useSelector((state) => state.ujian);
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
+  const [token, setToken] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (idScore) {
+      navigate('/Pertanyaan?id=' + idScore);
+    }
+  }, [idScore, navigate]);
 
   useEffect(() => {
     if (!searchParams.get('id')) {
@@ -30,13 +38,15 @@ export default function Ujian() {
     }
     const getData = async () => {
       await dispatch(preTest(searchParams.get('id')));
-      if (message) {
-        return navigate('/');
-      }
     };
     getData();
-  }, [dispatch, message, navigate, searchParams]);
+  }, [dispatch, navigate, searchParams]);
 
+  const onClickMasuk = async () => {
+    if (token) {
+      await dispatch(mulaiUjian({ token, idUjian: searchParams.get('id') }));
+    }
+  };
   return (
     <Card>
       <CardMedia
@@ -91,6 +101,11 @@ export default function Ujian() {
           noValidate
           autoComplete="off"
         >
+          {message !== '' ? (
+            <Alert sx={{ m: 1 }} severity="warning">
+              {message}
+            </Alert>
+          ) : null}
           <Grid container>
             <Grid xs={9} md={9}>
               <TextField
@@ -98,15 +113,14 @@ export default function Ujian() {
                 id="filled-hidden-label-small"
                 placeholder="Masukan token"
                 size="small"
+                value={token}
+                onChange={(e) => setToken(e.target.value)}
               />
             </Grid>
             <Grid xs={2} md={2} sx={{ marginLeft: 1 }}>
-              <Link
-                style={{ color: 'inherit', textDecoration: 'inherit' }}
-                to={`/Pertanyaan`}
-              >
-                <Button variant="contained">Masuk</Button>
-              </Link>
+              <Button variant="contained" onClick={onClickMasuk}>
+                Masuk
+              </Button>
             </Grid>
           </Grid>
         </Stack>

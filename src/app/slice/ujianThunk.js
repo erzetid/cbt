@@ -46,3 +46,76 @@ export const preTest = createAsyncThunk(
     }
   }
 );
+
+export const mulaiUjian = createAsyncThunk(
+  '/ujian/mulai',
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      const states = getState();
+      const response = await api.post(`/ujian/mulai`, payload, {
+        headers: {
+          Authorization: 'Bearer ' + states.auth.token //the token is a variable which holds the token
+        }
+      });
+      return response.data;
+    } catch (error) {
+      if (!error.response) {
+        return (
+          { message: error.message, status: 'error' } &&
+          rejectWithValue({ message: error.message, status: 'error' })
+        );
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const lihatJawaban = createAsyncThunk(
+  '/ujian/lihat_jawaban',
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      const states = getState();
+      const response = await api.post(
+        `/ujian/lihat_jawaban/` + payload,
+        {},
+        {
+          headers: {
+            Authorization: 'Bearer ' + states.auth.token //the token is a variable which holds the token
+          }
+        }
+      );
+      return response.data;
+    } catch (error) {
+      if (!error.response) {
+        return (
+          { message: error.message, status: 'error' } &&
+          rejectWithValue({ message: error.message, status: 'error' })
+        );
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const pertanyaan = createAsyncThunk(
+  '/ujian/pertanyaan',
+  async (payload, { getState, rejectWithValue }) => {
+    try {
+      const states = getState();
+      const response = await api.post(`/ujian/pertanyaan`, payload, {
+        headers: {
+          Authorization: 'Bearer ' + states.auth.token //the token is a variable which holds the token
+        }
+      });
+      return response.data;
+    } catch (error) {
+      if (!error.response) {
+        return (
+          { message: error.message, status: 'error' } &&
+          rejectWithValue({ message: error.message, status: 'error' })
+        );
+      }
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
