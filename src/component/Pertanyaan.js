@@ -11,7 +11,11 @@ import HTMLparser from 'html-to-react';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { lihatJawaban, pertanyaan } from '../app/slice/ujianThunk';
+import {
+  lihatJawaban,
+  pertanyaan,
+  updateJawaban
+} from '../app/slice/ujianThunk';
 
 const htmlParser = new HTMLparser.Parser();
 export default function Pertanyaan() {
@@ -66,9 +70,15 @@ export default function Pertanyaan() {
     }
   };
 
-  const handleChange = (event) => {
+  const handleChange = async (event) => {
     const { value } = event.target;
-    alert(value);
+    await dispatch(
+      updateJawaban({
+        idScore: dataJawaban._id,
+        idPertanyaan: soal._id,
+        jawaban: value
+      })
+    );
   };
 
   return (

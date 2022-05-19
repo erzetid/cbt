@@ -100,7 +100,7 @@ const ResponsiveAppBar = () => {
                   <Typography textAlign="center">
                     <Link
                       style={{ color: 'inherit', textDecoration: 'inherit' }}
-                      to={page}
+                      to={page === 'Dashboard' ? '/' : `/${page}`}
                     >
                       {page}
                     </Link>
@@ -131,7 +131,7 @@ const ResponsiveAppBar = () => {
               >
                 <Link
                   style={{ color: 'inherit', textDecoration: 'inherit' }}
-                  to={`/${page}`}
+                  to={page === 'Dashboard' ? '/' : `/${page}`}
                 >
                   {page}
                 </Link>

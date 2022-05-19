@@ -43,10 +43,9 @@ function App() {
         <Container>
           <Routes>
             <Route exact path="/" element={<User />} />
-            <Route exact path="/Dashboard" element={<User />} />
-            <Route exact path="/Pengumuman" element={<Pengumuman />} />
-            <Route exact path="/Ujian" element={<Ujian />} />
-            <Route exact path="/Pertanyaan" element={<Pertanyaan />} />
+            <Route path="/Pengumuman" element={<Pengumuman />} />
+            <Route path="/Ujian" element={<Ujian />} />
+            <Route path="/Pertanyaan" element={<Pertanyaan />} />
           </Routes>
         </Container>
         <Typography
