@@ -100,7 +100,7 @@ const ResponsiveAppBar = () => {
                   <Typography textAlign="center">
                     <Link
                       style={{ color: 'inherit', textDecoration: 'inherit' }}
-                      to={`/${page}`}
+                      to={page}
                     >
                       {page}
                     </Link>

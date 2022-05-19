@@ -1,22 +1,42 @@
-import * as React from 'react';
+import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
-import Grid from '@mui/material/Grid';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import trainImage from '../asset/train.jpg';
-import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import { Link } from 'react-router-dom';
 import TableRow from '@mui/material/TableRow';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { preTest } from '../app/slice/ujianThunk';
+import trainImage from '../asset/train.jpg';
 
 export default function Ujian() {
+  const { dataPreTest, message } = useSelector((state) => state.ujian);
+  const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!searchParams.get('id')) {
+      return navigate('/');
+    }
+    const getData = async () => {
+      await dispatch(preTest(searchParams.get('id')));
+      if (message) {
+        return navigate('/');
+      }
+    };
+    getData();
+  }, [dispatch, message, navigate, searchParams]);
+
   return (
     <Card>
       <CardMedia
@@ -27,31 +47,31 @@ export default function Ujian() {
       />
       <CardContent>
         <Typography gutterBottom variant="h6" sx={{ textAlign: 'center' }}>
-          Ujian Matematika
+          {dataPreTest.ujian}
         </Typography>
         <TableContainer>
           <Table size="small" aria-label="a dense table">
             <TableBody>
               <TableRow>
                 <TableCell align="left">Nama</TableCell>
-                <TableCell align="left">: Muhammad Andri Fahrizal</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="left">Kelas</TableCell>
-                <TableCell align="left">: XII TBSM</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell align="left">Waktu</TableCell>
-                <TableCell align="left">: 90 Menit</TableCell>
+                <TableCell align="left">: {dataPreTest.nama}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell align="left">Soal</TableCell>
-                <TableCell align="left">: 40 buah</TableCell>
+                <TableCell align="left">: {dataPreTest.soal}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell align="left">Waktu</TableCell>
+                <TableCell align="left">: {dataPreTest.durasi} Menit</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell align="left">Jumlah Soal</TableCell>
+                <TableCell align="left">: {dataPreTest.jumlah} buah</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell align="left">Jadwal</TableCell>
                 <TableCell align="left">
-                  : 21 Sep 2021 19:30 - 22 Sep 2022 18:30 WIB
+                  : {new Date(dataPreTest.jadwal).toLocaleString()}
                 </TableCell>
               </TableRow>
             </TableBody>

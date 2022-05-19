@@ -1,6 +1,10 @@
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import { Avatar, Card, CardContent, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/styles';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { refreshToken } from '../app/slice/authThunk';
+import { getUjian } from '../app/slice/ujianThunk';
 import TableUser from './TableUser';
 
 const AvatarCust = styled(Avatar)({
@@ -17,6 +21,16 @@ const Typography1 = styled(Typography)({
 });
 
 const User = () => {
+  const dispatch = useDispatch();
+  const { dataUjian } = useSelector((state) => state.ujian);
+  useEffect(() => {
+    const fetch = async () => {
+      await dispatch(refreshToken());
+      await dispatch(getUjian());
+    };
+    fetch();
+  }, [dispatch]);
+
   return (
     <div>
       <Card
@@ -62,7 +76,7 @@ const User = () => {
               </Typography>
             </CardContent>
           </Card>
-          <TableUser />
+          <TableUser data={dataUjian} />
         </Grid>
       </Grid>
     </div>
