@@ -41,13 +41,10 @@ const User = () => {
         }}
       >
         <CardContent>
-          <AvatarCust
-            alt="Muhammad Andri Fahrizal"
-            src="/static/images/avatar/2.jpg"
-          />
+          <AvatarCust alt="Jamaludin" src="/static/images/avatar/2.jpg" />
 
           <Typography1 color="text.secondary" gutterBottom>
-            Muhammad Andri Fahrizal
+            Jamaludin
           </Typography1>
         </CardContent>
       </Card>

@@ -21,6 +21,8 @@ const htmlParser = new HTMLparser.Parser();
 export default function Pertanyaan() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { soal, dataJawaban } = useSelector((state) => state.ujian);
+  const [countDown, setCountDown] = useState(0);
+  const [runTimer, setRunTimer] = useState(true);
   const [nomor, setNomor] = useState(0);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -46,6 +48,36 @@ export default function Pertanyaan() {
     setNomor(1);
     getSoal();
   }, [dataJawaban]);
+
+  useEffect(() => {
+    let timerId;
+
+    if (dataJawaban) {
+      const waktuMulai = (Date.now() - dataJawaban.waktuMulai) / 1000 / 60;
+
+      console.log(dataJawaban.durasi - waktuMulai);
+      setCountDown(Math.floor((dataJawaban.durasi - waktuMulai) * 60));
+      timerId = setInterval(() => {
+        setCountDown((countDown) => countDown - 1);
+      }, 1000);
+    } else {
+      clearInterval(timerId);
+    }
+
+    return () => clearInterval(timerId);
+  }, [dataJawaban]);
+
+  useEffect(() => {
+    if (countDown < 0 && runTimer) {
+      console.log('expired');
+      setRunTimer(false);
+      setCountDown(0);
+    }
+  }, [countDown, runTimer]);
+
+  const seconds = String(countDown % 60).padStart(2, 0);
+  const minutes = String(Math.floor(countDown / 60)).padStart(2, 0);
+
   const onClickNext = async () => {
     if (nomor < dataJawaban.jawaban.length) {
       await dispatch(
@@ -89,7 +121,7 @@ export default function Pertanyaan() {
           justifyContent: 'space-between'
         }}
       >
-        <Button variant="contained" size="large" color="secondary" disabled>
+        <Button variant="contained" size="large" color="secondary">
           {nomor}/{dataJawaban && dataJawaban.jawaban.length}
         </Button>
         <Button
@@ -98,7 +130,7 @@ export default function Pertanyaan() {
           size="large"
           startIcon={<AlarmIcon />}
         >
-          40:00
+          {`${minutes}:${seconds}`}
         </Button>
         <Button size="large" variant="contained">
           Selesai

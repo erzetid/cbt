@@ -4,7 +4,8 @@ import {
   lihatJawaban,
   mulaiUjian,
   pertanyaan,
-  preTest
+  preTest,
+  selesaiUjian
 } from './ujianThunk';
 
 const initialState = {
@@ -25,13 +26,18 @@ const initialState = {
     soal: '',
     pilihan: [],
     _id: ''
-  }
+  },
+  isSelesai: false
 };
 
 export const ujianSlice = createSlice({
   name: 'ujian',
   initialState,
-  reducers: {},
+  reducers: {
+    setSelesai: (state, action) => {
+      state.isSelesai = action.payload;
+    }
+  },
   extraReducers: {
     [getUjian.fulfilled]: (state, action) => {
       const { data } = action.payload;
@@ -73,9 +79,12 @@ export const ujianSlice = createSlice({
     },
     [pertanyaan.rejected]: (state, action) => {
       state.soal = initialState.soal;
+    },
+    [selesaiUjian.fulfilled]: (state, action) => {
+      state.isSelesai = true;
     }
   }
 });
 
-export const {} = ujianSlice.actions;
+export const { setSelesai } = ujianSlice.actions;
 export default ujianSlice.reducer;
